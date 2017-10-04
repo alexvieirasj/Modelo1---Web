@@ -12,6 +12,7 @@
             <p:messages/>
             <p:growl/>
             <p:commandButton value="Novo" action="#{controleAluno.novo()}" ajax="false" icon="ui-icon-plus"/>
+            <p:commandButton value="Menu" action="#{controleIndex.index()}" ajax="false" icon="ui-icon-home"/>
             <p:dataTable value="#{controleAluno.dao.lista}" var="obj">
                 <p:column headerText="ID">
                     <p:outputLabel value="#{obj.id}"/>
