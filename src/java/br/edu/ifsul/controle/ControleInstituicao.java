@@ -20,12 +20,12 @@ import javax.faces.bean.SessionScoped;
 @SessionScoped
 public class ControleInstituicao implements Serializable {
     
-    private InstituicaoDAO dao;
+    private InstituicaoDAO<Instituicao> dao;
     private Instituicao objeto;
     
     
     public ControleInstituicao(){
-        dao = new InstituicaoDAO();
+        dao = new InstituicaoDAO<>();
     }
     
     public String listar(){
@@ -38,7 +38,13 @@ public class ControleInstituicao implements Serializable {
     }
     
     public String salvar(){
-        if (dao.salvar(objeto)){
+        boolean persistiu;
+        if (objeto.getId() == null){
+            persistiu = dao.persist(objeto);
+        } else {
+            persistiu = dao.merge(objeto);
+        }
+        if (persistiu){
             Util.mensagemInformacao(dao.getMensagem());
             return "listar?faces-redirect=true";
         } else {
@@ -64,12 +70,12 @@ public class ControleInstituicao implements Serializable {
             Util.mensagemErro(dao.getMensagem());
         }
     }
-    
-    public InstituicaoDAO getDao() {
+
+    public InstituicaoDAO<Instituicao> getDao() {
         return dao;
     }
 
-    public void setDao(InstituicaoDAO dao) {
+    public void setDao(InstituicaoDAO<Instituicao> dao) {
         this.dao = dao;
     }
 
@@ -80,6 +86,5 @@ public class ControleInstituicao implements Serializable {
     public void setObjeto(Instituicao objeto) {
         this.objeto = objeto;
     }
-
-
+    
 }

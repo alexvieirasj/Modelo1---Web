@@ -7,7 +7,7 @@
       xmlns:p="http://primefaces.org/ui">
     <f:view encoding="ISO-8859-1" contentType="text/html">
         <h:head>
-            <title><ui:insert name="titulo">Cadastro de Professores</ui:insert></title>
+            <title><ui:insert name="titulo">Sistema de Controle de Modelo 1</ui:insert></title>
             <h:outputStylesheet library="css" name="estilos.css"/>
             <h:outputScript library="js" name="scripts.js"/>
         </h:head>
@@ -18,7 +18,7 @@
                     <p:megaMenu>
                         <p:submenu label="Cadastros">
                             <p:column>
-                                <p:submenu label="Menus">
+                                <p:submenu label="Basicos">
                                     <p:menuitem action="#{controleEspecialidade.listar()}" ajax="false" 
                                                 value="Manutenção de Especialidades"/>
                                     <p:menuitem action="#{controleProfessor.listar()}" ajax="false" 
@@ -27,6 +27,13 @@
                                                 value="Manutenção de Alunos"/>
                                     <p:menuitem action="#{controleInstituicao.listar()}" ajax="false" 
                                                 value="Manutenção de Instituição"/>
+                                </p:submenu>
+                                <p:submenu label="Organizacional">
+                                    <p:menuitem action="#{controleCurso.listar()}" ajax="false"
+                                                value="Manutenção de Cursos"/>                                  
+                               
+                                    <p:menuitem action="#{controleDisciplina.listar()}" ajax="false"
+                                                value="Manutenção de Disciplinas"/>      
                                 </p:submenu>
                             </p:column>
                         </p:submenu>

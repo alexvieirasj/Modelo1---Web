@@ -29,7 +29,7 @@ public class ControleIndex implements Serializable {
     }
 
     public String index() { //retorna para o index
-        return "/templates/template?faces-redirect=true";
+        return "/index?faces-redirect=true";
     }
 
     public String getMensagem() {

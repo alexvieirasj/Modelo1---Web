@@ -20,12 +20,12 @@ import javax.faces.bean.SessionScoped;
 @SessionScoped
 public class ControleEspecialidade implements Serializable {
     
-    private EspecialidadeDAO dao;
+    private EspecialidadeDAO<Especialidade> dao;
     private Especialidade objeto;
     
     
     public ControleEspecialidade(){
-        dao = new EspecialidadeDAO();
+        dao = new EspecialidadeDAO<>();
     }
     
     public String listar(){
@@ -33,16 +33,22 @@ public class ControleEspecialidade implements Serializable {
     }
     
     public String novo(){
-        objeto = new Especialidade();
+        setObjeto(new Especialidade());
         return "formulario?faces-redirect=true";
     }
     
     public String salvar(){
-        if (dao.salvar(objeto)){
-            Util.mensagemInformacao(dao.getMensagem());
+        boolean persistiu;
+        if (getObjeto().getId() == null){
+            persistiu = getDao().persist(getObjeto());
+        } else {
+            persistiu = getDao().merge(getObjeto());
+        }
+        if (persistiu){
+            Util.mensagemInformacao(getDao().getMensagem());
             return "listar?faces-redirect=true";
         } else {
-            Util.mensagemErro(dao.getMensagem());
+            Util.mensagemErro(getDao().getMensagem());
             return "formulario?faces-redirect=true";
         }
     }
@@ -52,24 +58,24 @@ public class ControleEspecialidade implements Serializable {
     }
     
     public String editar(Integer id){
-        objeto = dao.localizar(id);
+        setObjeto(getDao().localizar(id));
         return "formulario?faces-redirect=true";
     }
     
     public void remover(Integer id){
-        objeto = dao.localizar(id);
-        if (dao.remover(objeto)){
-            Util.mensagemInformacao(dao.getMensagem());
+        setObjeto(getDao().localizar(id));
+        if (getDao().remover(getObjeto())){
+            Util.mensagemInformacao(getDao().getMensagem());
         } else {
-            Util.mensagemErro(dao.getMensagem());
+            Util.mensagemErro(getDao().getMensagem());
         }
     }
-    
-    public EspecialidadeDAO getDao() {
+
+    public EspecialidadeDAO<Especialidade> getDao() {
         return dao;
     }
 
-    public void setDao(EspecialidadeDAO dao) {
+    public void setDao(EspecialidadeDAO<Especialidade> dao) {
         this.dao = dao;
     }
 
@@ -80,6 +86,5 @@ public class ControleEspecialidade implements Serializable {
     public void setObjeto(Especialidade objeto) {
         this.objeto = objeto;
     }
-
-
+    
 }

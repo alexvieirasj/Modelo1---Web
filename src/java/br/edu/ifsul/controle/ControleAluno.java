@@ -1,32 +1,34 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package br.edu.ifsul.controle;
 
 import br.edu.ifsul.dao.AlunoDAO;
 import br.edu.ifsul.modelo.Aluno;
 import br.edu.ifsul.util.Util;
 import java.io.Serializable;
+import java.util.HashMap;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
 /**
  *
- * @author alexv
+ * @author Prof. Me. Jorge Luis Boeira Bavaresco
+ * @email jorge.bavaresco@passofundo.ifsul.edu.br
+ * @organization IFSUL - Campus Passo Fundo
  */
 @ManagedBean(name = "controleAluno")
 @SessionScoped
 public class ControleAluno implements Serializable {
     
-    private AlunoDAO dao;
+    private AlunoDAO<Aluno> dao;
     private Aluno objeto;
     
-    
     public ControleAluno(){
-        dao = new AlunoDAO();
+        dao = new AlunoDAO<>();
     }
+    
+    /*public void imprimir(){
+        HashMap parametros = new HashMap();
+        UtilRelatorios.imprimeRelatorio("relatoriosAlunos", parametros, dao.getListaTodos());
+    }*/
     
     public String listar(){
         return "/privado/aluno/listar?faces-redirect=true";
@@ -38,7 +40,13 @@ public class ControleAluno implements Serializable {
     }
     
     public String salvar(){
-        if (dao.salvar(objeto)){
+        boolean persistiu;
+        if (objeto.getId() == null){
+            persistiu = dao.persist(objeto);
+        } else {
+            persistiu = dao.merge(objeto);
+        }
+        if (persistiu){
             Util.mensagemInformacao(dao.getMensagem());
             return "listar?faces-redirect=true";
         } else {
@@ -80,6 +88,5 @@ public class ControleAluno implements Serializable {
     public void setObjeto(Aluno objeto) {
         this.objeto = objeto;
     }
-
 
 }

@@ -22,13 +22,13 @@ import javax.faces.bean.SessionScoped;
 @SessionScoped
 public class ControleProfessor implements Serializable {
     
-    private ProfessorDAO dao;
+    private ProfessorDAO<Professor> dao;
     private Professor objeto;
     private EspecialidadeDAO daoEspecialidade;
     private AlunoDAO daoAluno;
     
     public ControleProfessor(){
-        dao = new ProfessorDAO();
+        dao = new ProfessorDAO<>();
         daoEspecialidade = new EspecialidadeDAO();
         daoAluno = new AlunoDAO();
     }
@@ -38,16 +38,22 @@ public class ControleProfessor implements Serializable {
     }
     
     public String novo(){
-        setObjeto(new Professor());
+        objeto = new Professor();
         return "formulario?faces-redirect=true";
     }
     
     public String salvar(){
-        if (getDao().salvar(getObjeto())){
-            Util.mensagemInformacao(getDao().getMensagem());
+        boolean persistiu;
+        if (objeto.getId() == null){
+            persistiu = dao.persist(objeto);
+        } else {
+            persistiu = dao.merge(objeto);
+        }
+        if (persistiu){
+            Util.mensagemInformacao(dao.getMensagem());
             return "listar?faces-redirect=true";
         } else {
-            Util.mensagemErro(getDao().getMensagem());
+            Util.mensagemErro(dao.getMensagem());
             return "formulario?faces-redirect=true";
         }
     }
@@ -57,24 +63,24 @@ public class ControleProfessor implements Serializable {
     }
     
     public String editar(Integer id){
-        setObjeto(getDao().localizar(id));
+        objeto = dao.localizar(id);
         return "formulario?faces-redirect=true";
     }
     
     public void remover(Integer id){
-        setObjeto(getDao().localizar(id));
-        if (getDao().remover(getObjeto())){
-            Util.mensagemInformacao(getDao().getMensagem());
+        objeto = dao.localizar(id);
+        if (dao.remover(objeto)){
+            Util.mensagemInformacao(dao.getMensagem());
         } else {
-            Util.mensagemErro(getDao().getMensagem());
+            Util.mensagemErro(dao.getMensagem());
         }
     }
     
-    public ProfessorDAO getDao() {
+    public ProfessorDAO<Professor> getDao() {
         return dao;
     }
 
-    public void setDao(ProfessorDAO dao) {
+    public void setDao(ProfessorDAO<Professor> dao) {
         this.dao = dao;
     }
 
@@ -101,6 +107,4 @@ public class ControleProfessor implements Serializable {
     public void setDaoAluno(AlunoDAO daoAluno) {
         this.daoAluno = daoAluno;
     }
-
-
 }
