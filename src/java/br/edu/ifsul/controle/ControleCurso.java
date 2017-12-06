@@ -41,17 +41,22 @@ public class ControleCurso implements Serializable {
         setNovaDisciplina((Boolean) true);
     }
     
+    public void adicionarDisciplina(){
+        disciplina.setCurso(objeto);
+        objeto.getDisciplinas().add(disciplina);
+    }
+    
     public void alterarDisciplina(int index){
         setDisciplina(getObjeto().getDisciplinas().get(index));
         novaDisciplina = false;
     }
     
-    public void salvarDisciplina(){
+    /*public void salvarDisciplina(){
         if (novaDisciplina){
             getObjeto().adicionarDisciplina(getDisciplina());
         }
         Util.mensagemInformacao("Disciplina persistida com sucesso!");
-    }
+    } */
     
     public void removerDisciplina(int index){
         getObjeto().removerDisciplina(index);
