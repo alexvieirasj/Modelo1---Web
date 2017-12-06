@@ -51,7 +51,7 @@
                         <p:selectOneMenu id="selectEspecialidade" value="#{controleProfessor.objeto.especialidade}">
                             <f:converter converterId="converterEspecialidade"/>
                             <f:selectItem noSelectionOption="true" itemLabel="Selecione um registro"/>
-                            <f:selectItems value="#{controleProfessor.daoEspecialidade.lista}" var="e"
+                            <f:selectItems value="#{controleProfessor.daoEspecialidade.listaTodos}" var="e"
                                            itemLabel="#{e.nome}"/>
                         </p:selectOneMenu>
                     </p:panelGrid>
